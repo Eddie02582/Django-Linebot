@@ -36,7 +36,7 @@ LINE_CHANNEL_ACCESS_TOKEN = 'Messaging API的Channel access token'
 LINE_CHANNEL_SECRET = 'Basic settings的Channel Secret'
 ```
 
-## 開發LINE Bot應用程式
+## LINE Bot應用程式
 views.py建立後台執行的函數,當訊息送出後就會跑到這個函數
 ```python 
 from django.shortcuts import render
@@ -79,6 +79,15 @@ def callback(request):
 
 urls.py 建立相對應callback函數的網址
 
+```python
+from django.urls import path
+from . import views
+ 
+urlpatterns = [
+    path('callback', views.callback)
+]
+
+```
 
 
 ## install Ngrok
@@ -87,6 +96,33 @@ urls.py 建立相對應callback函數的網址
 
 可以將LINE Bot應用程式(APP)部署到像Heroku，還可以使用Ngrok。Ngrok。是能夠將你本機的IP埠號(http://127.0.0.1:8000)，對應到一個隨機產生的HTTPS網址，並且這個HTTPS網址是對外公開的的，
 
+進入網站註冊後會得到一個authtoken
+
+```
+    ngrok authtoken your_authtoken
+```
+之後執行,80可以修改自行對應的port
+```
+    ngrok http 80
+```
+得到HTTPS網址
+<img src="12.PNG" alt="Smiley face">
 
 ## LINE Webhook URL
-有了url 之後,就可以在line 建立
+有了url跟https,就可以在line 建立連結,對應的網址填入,並將webhook啟用
+<img src="8.PNG" alt="Smiley face">
+
+
+並點auto-reply messages修改設定
+<img src="11.PNG" alt="Smiley face">
+
+
+
+
+
+
+
+
+
+
+
