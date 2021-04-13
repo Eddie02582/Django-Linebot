@@ -13,7 +13,7 @@
 
 
 點選Creating a provider
-<img src="2.PNG" width="800" height="600">
+<img src="2.PNG">
 ## 建立Messaging API channel
 
 點選Creating a Messaging API cHANNEL
