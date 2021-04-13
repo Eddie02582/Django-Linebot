@@ -101,7 +101,7 @@ urlpatterns = [
 ```
     ngrok authtoken your_authtoken
 ```
-之後執行,80可以修改自行對應的port
+執行下面這行指令,80為port,可自行修改,但必須與django port 對應
 ```
     ngrok http 80
 ```
