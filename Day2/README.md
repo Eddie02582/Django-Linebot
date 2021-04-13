@@ -13,24 +13,29 @@
 
 
 點選Creating a provider
-
+<img src="2.PNG" alt="Smiley face">
 ## 建立Messaging API channel
 
 點選Creating a Messaging API cHANNEL
+<img src="3.PNG" alt="Smiley face">
 
+開始填入相關資料
+<img src="4.PNG" alt="Smiley face">
 
-
-
-
+最後取得Channel secret,Channel ACCESS TOKEN,並記錄起來
+<img src="5.PNG" alt="Smiley face">
 
 
 ## 在setting.py 新增
-
+將剛剛得到的最後取得Channel,Channel ACCESS TOKEN填在setting.py
 ```
 LINE_CHANNEL_ACCESS_TOKEN = 'Messaging API的Channel access token'
  
 LINE_CHANNEL_SECRET = 'Basic settings的Channel Secret'
 ```
+
+## 建立對應的view函數
+
 
 
 ## install Ngrok
@@ -41,4 +46,4 @@ LINE_CHANNEL_SECRET = 'Basic settings的Channel Secret'
 
 
 ## LINE Webhook URL
-有了url 之後
+有了url 之後,就可以在line 建立
