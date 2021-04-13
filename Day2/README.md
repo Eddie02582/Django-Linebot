@@ -13,7 +13,7 @@
 
 
 點選Creating a provider
-<img src="2.PNG" alt="Smiley face">
+<img src="2.PNG" width="800" height="600">
 ## 建立Messaging API channel
 
 點選Creating a Messaging API cHANNEL
@@ -106,7 +106,7 @@ urlpatterns = [
     ngrok http 80
 ```
 得到HTTPS網址<br>
-<img src="12.PNG" width="500" height="600">
+<img src="12.PNG" >
 
 ## LINE Webhook URL
 有了url跟https,就可以在line 建立連結,對應的網址填入,並將webhook啟用
