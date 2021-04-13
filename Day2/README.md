@@ -12,7 +12,7 @@
 
 
 
-點選Creating a provider
+建立完成如下
 <img src="2.PNG">
 ## 建立Messaging API channel
 
@@ -28,7 +28,7 @@
 取得Channel ACCESS TOKEN,記錄起來
 <img src="6.PNG" alt="Smiley face">
 
-## 在setting.py 新增
+## setting.py 新增LINE Bot憑證
 將剛剛得到的最後取得Channel,Channel ACCESS TOKEN填在setting.py
 ```
 LINE_CHANNEL_ACCESS_TOKEN = 'Messaging API的Channel access token'
@@ -36,7 +36,7 @@ LINE_CHANNEL_ACCESS_TOKEN = 'Messaging API的Channel access token'
 LINE_CHANNEL_SECRET = 'Basic settings的Channel Secret'
 ```
 
-## LINE Bot應用程式
+## Django 建立LINE Bot後台
 views.py建立後台執行的函數,當訊息送出後就會跑到這個函數
 ```python 
 from django.shortcuts import render
@@ -90,7 +90,7 @@ urlpatterns = [
 ```
 
 
-## install Ngrok
+## Install Ngrok
 
 需要讓網址能夠公開(Public)且具有HTTPS，LINE頻道(Channel)才有辦法連結。
 
@@ -117,7 +117,8 @@ urlpatterns = [
 <img src="11.PNG" alt="Smiley face">
 
 
-
+## 結果
+<img src="13.PNG" alt="Smiley face">
 
 
 
