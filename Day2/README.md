@@ -1,6 +1,6 @@
-# Day2
+# Day2 
 
-建立line bot
+這篇教如何建立line bot,與其對應的試圖函數
 
 
 ## 建立 LINE Developers
@@ -8,7 +8,7 @@
 前往<a href = "https://developers.line.biz/zh-hant/">LINE Developers</a>,點選登入並使用使用LINE帳號登入
 會看到如下圖的畫面，輸入姓名及電子郵件即可，目的在於讓開發人員同意使用規範與聯絡使用
 
-
+<img src="1.PNG" alt="Smiley face">
 
 
 

@@ -31,7 +31,7 @@
 
 ## 修改setting.py 
 INSTALL_APPS 新增 app 
-```
+```python
 # Application definition
     INSTALLED_APPS = [
         'django.contrib.admin',
@@ -45,7 +45,7 @@ INSTALL_APPS 新增 app
 ```
 
 TEMPLATES 的'DIRS'修改成'DIRS': ['./templates',],
-```
+```python
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -63,8 +63,8 @@ TEMPLATES = [
 ]
 ```
 
-## url
-```
+## 新增對應url
+```python
 from django.contrib import admin
 from django.urls import path
 
