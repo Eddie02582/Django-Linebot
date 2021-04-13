@@ -3,7 +3,7 @@
 上一張使用TextSendMessage傳送文字,這次介紹傳送其他類型的方法
 
 ```
-    from linebot.models import StickerSendMessage, TextSendMessage,StickerSendMessage,ImageSendMessage
+from linebot.models import StickerSendMessage, TextSendMessage,StickerSendMessage,ImageSendMessage
 ```
 
 ## 傳送文字TextSendMessage
@@ -26,14 +26,10 @@ StickerSendMessage 有2個參數package_id,sticker_id,可以由 <a href = "https
 
 ## 傳送圖片ImageSendMessage
 只能傳送含有網址的圖片,有2個參數如下
+
 <li>original_content_url:表示原圖的網址</li>
 <li>preview_image_url:預覽圖的網址</li>
-```
-    ImageSendMessage(
-        original_content_url = 'https://res.klook.com/image/upload/c_fill,w_960,h_460,f_auto/w_80,x_15,y_15,g_south_west,l_klook_water/activities/cmyvmrvbcil7awimgwt0.webp',
-        preview_image_url = 'https://res.klook.com/image/upload/c_fill,w_960,h_460,f_auto/w_80,x_15,y_15,g_south_west,l_klook_water/activities/cmyvmrvbcil7awimgwt0.webp'
-    )
-```
+
 
 
 
