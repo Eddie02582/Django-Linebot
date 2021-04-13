@@ -105,8 +105,8 @@ urlpatterns = [
 ```
     ngrok http 80
 ```
-得到HTTPS網址
-<img src="12.PNG" alt="Smiley face">
+得到HTTPS網址<br>
+<img src="12.PNG" width="500" height="600">
 
 ## LINE Webhook URL
 有了url跟https,就可以在line 建立連結,對應的網址填入,並將webhook啟用
