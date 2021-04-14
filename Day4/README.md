@@ -27,12 +27,7 @@ class SupertasteSpider(scrapy.Spider):
 
 我們想取得連結,可以從div class ="box"底下ul li a取得
 
-
 <img src="1.PNG">
-<br>
-```python
-    response.css('div.box ul li a')     
-```
 
 
 
