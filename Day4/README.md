@@ -29,6 +29,7 @@ class SupertasteSpider(scrapy.Spider):
 
 
 <img src="1.PNG">
+<br>
 ```python
     response.css('div.box ul li a')     
 ```
