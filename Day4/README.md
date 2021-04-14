@@ -32,7 +32,7 @@ class SupertasteSpider(scrapy.Spider):
 
 
 
-
+取得內部資料
 <img src="2.PNG">
 
 ```python
