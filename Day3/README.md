@@ -46,6 +46,16 @@ from linebot.models import StickerSendMessage, TextSendMessage,StickerSendMessag
 <img src="3.PNG" alt="Smiley face">
 
 
+## 傳送位置
+
+
+## 傳送影片
+
+
+## 傳送聲音檔
+
+
+## 傳送檔案
 
 
 
