@@ -89,7 +89,7 @@ def get_restaurant(keyword):
     return content if content else "目前沒有資料"
 ```
 修改原本的訊息內容
-```
+```python
 @csrf_exempt
 def callback(request):
 ....
@@ -104,7 +104,7 @@ def callback(request):
 ```
 
 
-
+<img src="1.PNG">
 
 
 
