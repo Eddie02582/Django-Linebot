@@ -1,20 +1,23 @@
 # Day4 爬蟲
 
 
-建立可以查附近食尚玩家有介紹的店,透過網路爬蟲建立資料
+建立可以查附近食尚玩家有介紹的店,首先透過網路爬蟲建立資料
 
 ## scrapy
 
-首先我們建立基本的爬蟲,在cmd 底下下
+首先我們建立基本的爬蟲,在cmd 下
 ```
     scrapy startproject example
 ```
 
-接著進入example\spiders,在cmd下下列指令
+接著進入example\spiders,在cmd下
+
 ```
     scrapy genspider supertaste https://supertaste.tvbs.com.tw/review
 ```
+
 會產生supertaste.py
+
 ```python
 class SupertasteSpider(scrapy.Spider):
     name = 'supertaste'
@@ -32,8 +35,9 @@ class SupertasteSpider(scrapy.Spider):
 
 
 
-取得內部資料
+從連結取得資料
 <img src="2.PNG">
+
 
 ```python
     image_url = store.css('img.lazyimage::attr(data-original)').get()
@@ -47,7 +51,6 @@ class SupertasteSpider(scrapy.Spider):
 code 如下
 ```python
 import scrapy
-
 
 class SupertasteSpider(scrapy.Spider):
     name = 'supertaste'
@@ -86,10 +89,10 @@ class SupertasteSpider(scrapy.Spider):
 ```
 
 ## 如何取得下一頁 
-由於此網頁是藉由滾動到底部才產生新的內容,檢查一下網頁原始碼,可以發現是藉由觸發事件在去/review/LoadMoreOverview/page觸發
+由於此網頁是藉由滾動到底部才產生新的內容,檢查一下網頁原始碼,可以發現是藉由觸發事件在去/review/LoadMoreOverview/page觸發<br>
 <img src="3.PNG">
 
-
+<br>
 接著我們連進去https://supertaste.tvbs.com.tw/review/LoadMoreOverview/1,可以發現網頁內容是json格式,有明顯url的keyword
 <img src="4.PNG">
 
