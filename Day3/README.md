@@ -115,6 +115,7 @@ AudioSendMessage,有2個參數如下
 
 
 ### ButtonsTemplate
+<img src="4.PNG">
 ```python
     message = TemplateSendMessage(
         alt_text='Buttons template',
@@ -168,4 +169,59 @@ AudioSendMessage,有2個參數如下
 
 ### CarouselTemplate
 就是可以多個ButtonsTemplate
+
+```python
+    message = TemplateSendMessage(
+        alt_text = 'CarouselTemplate',
+        template = CarouselTemplate(
+            columns=[
+                CarouselColumn(
+                    thumbnail_image_url='https://stickershop.line-scdn.net//stickershop//v1//sticker//207700639//android//sticker.png',
+                    title='this is menu1',
+                    text='description1',
+                    actions=[
+                        PostbackTemplateAction(
+                            label='postback1',
+                            text='postback text1',
+                            data='action=buy&itemid=1'
+                        ),
+                        MessageTemplateAction(
+                            label='message1',
+                            text='message text1'
+                        ),
+                        URITemplateAction(
+                            label='uri2',
+                            uri='http://example.com/1'
+                        )
+                    ]
+                ),   
+                CarouselColumn(
+                    thumbnail_image_url='https://stickershop.line-scdn.net//stickershop//v1//sticker//207700649//android//sticker.png',
+                    title='this is menu1',
+                    text='description1',
+                    actions=[
+                        PostbackTemplateAction(
+                            label='postback2',
+                            text='postback text2',
+                            data='action=buy&itemid=1'
+                        ),
+                        MessageTemplateAction(
+                            label='message2',
+                            text='message text2'
+                        ),
+                        URITemplateAction(
+                            label='uri2',
+                            uri='http://example.com/1'
+                        )
+                    ]
+                ),                        
+
+            ]
+        )
+    )
+    line_bot_api.reply_message(  # 回復傳入的訊息文字
+        event.reply_token,                       
+        message                        
+    )  
+```
 
