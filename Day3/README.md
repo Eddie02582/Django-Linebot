@@ -1,131 +1,171 @@
-# Day3 爬蟲
+# Day3
 
+之前使用line 文字傳遞訊息的方法,還有以下格式
+<ul>
+    <li>文字</li>
+    <li>貼圖</li>
+    <li>圖片</li>
+    <li>影片</li>
+    <li>聲音</li>
+    <li>位置</li>
+    <li>影像地圖</li>
+    <li>模板</li>
+</ul>
 
-建立可以查附近食尚玩家有介紹的店,首先透過網路爬蟲建立資料
-
-## scrapy
-
-首先我們建立基本的爬蟲,在cmd 下
+下面為可能會import 到的
+```python
+from linebot.models import (ButtonsTemplate, CarouselColumn, CarouselTemplate,
+                            ConfirmTemplate, ImagemapSendMessage,
+                            ImageSendMessage, LocationSendMessage,
+                            MessageEvent, MessageTemplateAction,
+                            PostbackTemplateAction, StickerSendMessage,
+                            TemplateSendMessage, TextSendMessage,
+                            URITemplateAction, VideoSendMessage)
 ```
-    scrapy startproject example
+
+## 文字
+使用TextSendMessage,text 為要傳送的文字
+
+```python                    
+    TextSendMessage(text=event.message.text) 
 ```
 
-接著進入example\spiders,在cmd下
+## 貼圖
 
-```
-    scrapy genspider supertaste https://supertaste.tvbs.com.tw/review
-```
+使用StickerSendMessage函數,有2個參數如下
 
-會產生supertaste.py
+<li>package_id:貼圖package id</li>
+<li>sticker_id:貼圖 id</li>
+
+<a href = "https://developers.line.biz/en/docs/messaging-api/sticker-list/#sticker-definitions">網址</a>取得,參考如下
+<img src="1.PNG" alt="Smiley face">
 
 ```python
-class SupertasteSpider(scrapy.Spider):
-    name = 'supertaste'
-    allowed_domains = ['https://supertaste.tvbs.com.tw/review']
-    start_urls = ['http://https://supertaste.tvbs.com.tw/review/']
-
-    def parse(self, response):
-        pass
+    StickerSendMessage(package_id=6359, sticker_id=11069850)
 ```
 
-我們想取得連結,可以從div class ="box"底下ul li a取得
+結果如下
+<img src="2.PNG" alt="Smiley face">
 
-<img src="1.PNG">
+## 圖片
+使用ImageSendMessage函數,只能傳送含有網址的圖片,有2個參數如下
 
-
-
-
-從連結取得資料
-<img src="2.PNG">
+<li>original_content_url:表示原圖的網址</li>
+<li>preview_image_url:預覽圖的網址</li>
 
 
 ```python
-    image_url = store.css('img.lazyimage::attr(data-original)').get()
-    name = store.css('div.store_info h2::text').get()           
-    address = self.get_array_data(store.css('div.store_info p::text').re(r'地址：(.*)'))
-    business_hours = self.get_array_data(store.css('div.store_info p::text').re(r'時間：(.*)'))
-    telephone = self.get_array_data(store.css('div.store_info p::text').re(r'電話：(.*)'))  
+    ImageSendMessage(
+        original_content_url = 'https://res.klook.com/image/upload/c_fill,w_960,h_460,f_auto/w_80,x_15,y_15,g_south_west,l_klook_water/activities/cmyvmrvbcil7awimgwt0.webp',
+        preview_image_url = 'https://res.klook.com/image/upload/c_fill,w_960,h_460,f_auto/w_80,x_15,y_15,g_south_west,l_klook_water/activities/cmyvmrvbcil7awimgwt0.webp'
+    )
+```
+<img src="3.PNG" alt="Smiley face">
+
+## 影片
+
+使用VideoSendMessage,有2個參數如下
+
+<li>original_content_url:影片網址</li>
+<li>preview_image_url:預覽圖的網址</li>
+
+
+```python
+    VideoSendMessage(
+        original_content_url='https://example.com/original.mp4',
+        preview_image_url='https://example.com/preview.jpg'
+    )
+```
+
+## 聲音
+
+AudioSendMessage,有2個參數如下
+
+<li>original_content_url:網址</li>
+<li>duration:時間</li>
+
+
+```python
+     AudioSendMessage(original_content_url='音訊網址', duration=100000)
+```
+
+## 位置
+```
+    LocationSendMessage(
+        title='my location', 
+        address='Taipei', 
+        latitude=25.02, 
+        longitude=121.32
+     )
+```
+
+## 影像地圖
+
+
+## 模板
+
+
+首先先介紹Template 會用到幾個Action
+<ul>
+    <li>MessageTemplateAction:label 為顯示文字,text表示輸出給使用者的文字</li>
+    <li>PostbackTemplateAction:與上面差別多了傳回data</li>
+    <li>URITemplateAction</li>
+</ul>
+
+
+
+### ButtonsTemplate
+```python
+    message = TemplateSendMessage(
+        alt_text='Buttons template',
+        template = ButtonsTemplate(
+            thumbnail_image_url='https://stickershop.line-scdn.net//stickershop//v1//sticker//207700639//android//sticker.png',
+            title='Menu',
+            text='Please select',
+            actions=[
+                        PostbackTemplateAction(
+                            label='postback',
+                            text='postback text',
+                            data='action=buy&itemid=1'
+                        ),
+                        MessageTemplateAction(
+                            label='message',
+                            text='message text'
+                        ),
+                        URITemplateAction(
+                            label='uri',
+                            uri='http://example.com/'
+                        )
+                    ]
+        )
+    )
 ```
 
 
-code 如下
+
+### Confirm Template
 ```python
-import scrapy
-
-class SupertasteSpider(scrapy.Spider):
-    name = 'supertaste'
-    start_urls = ['https://supertaste.tvbs.com.tw/review/']
-
-    def parse(self, response):
-        detail_links = response.css('div.box ul li a')        
-        yield from response.follow_all(detail_links, self.parse_detail)
-        
-    def get_array_data(self,array):      
-        return array[0] if array else ""
-    
-    def parse_detail(self, response):  
-        date,show_name = response.css('div.newsdetail_content div.title h1::text').re(r'(\d+/\d+).*?《(.*?)》')           
-        
-        for store in response.css('div.store_div'):
-            image_url = store.css('img.lazyimage::attr(data-original)').get()
-            name = store.css('div.store_info h2::text').get()           
-            address = self.get_array_data(store.css('div.store_info p::text').re(r'地址：(.*)'))
-            business_hours = self.get_array_data(store.css('div.store_info p::text').re(r'時間：(.*)'))
-            telephone = self.get_array_data(store.css('div.store_info p::text').re(r'電話：(.*)'))  
-            if '食尚玩家購物網' in name:
-                continue
+    message = TemplateSendMessage(
+        alt_text='Buttons template',
+        template = ConfirmTemplate(
             
-            yield {
-                'date' : date,
-                'show_name' :  show_name,
-                'name' :  name,
-                'image_url' : image_url,
-                'address' : address,
-                'business_hours' :  business_hours,          
-                'telephone' :  telephone,
-                #'points' : points
-            }
-            
+            title='ConfirmTemplate',
+            text='click yes or no',
+            actions=[
+                PostbackTemplateAction(
+                    label='yes',
+                    text='postback text',
+                    data='action=buy&itemid=1'
+                ),
+                MessageTemplateAction(
+                    label='No',
+                    text='message text'
+                ),
+            ]
+        )
+    )
 ```
 
-## 如何取得下一頁 
-由於此網頁是藉由滾動到底部才產生新的內容,檢查一下網頁原始碼,可以發現是藉由觸發事件在去/review/LoadMoreOverview/page觸發<br>
-<img src="3.PNG">
-
-<br>
-接著我們連進去https://supertaste.tvbs.com.tw/review/LoadMoreOverview/1<br>
-可以發現網頁內容是json格式,有明顯url的keyword<br>
-<img src="4.PNG">
-
-
-```python
-class SupertasteSpider(scrapy.Spider):
-    name = 'supertaste'
-    start_urls = ["https://supertaste.tvbs.com.tw/review/LoadMoreOverview/%s" %page for page in range(1,66)]
-
-    def parse(self, response):
-        #read html as json
-        
-        datas = json.loads(response.body.decode('utf-8'))
-        detail_links = [data['url'] for data in datas]     
-        yield from response.follow_all(detail_links, self.parse_detail)       
-    ....
-```
-
-start_urls也可以用start_requests取代
-```python
-    def start_requests(self):       
-        for page in range(1,66):
-            url = "https://supertaste.tvbs.com.tw/review/LoadMoreOverview/%s" %page
-            yield scrapy.Request(url)    
-```
-
-執行
-
-```
-    scrapy crawl supertaste -o supertaste.csv
-```
-
-結果
-<img src="5.PNG">
+### CarouselTemplate
+就是可以多個ButtonsTemplate
 
