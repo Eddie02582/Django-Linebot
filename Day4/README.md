@@ -93,7 +93,8 @@ class SupertasteSpider(scrapy.Spider):
 <img src="3.PNG">
 
 <br>
-接著我們連進去https://supertaste.tvbs.com.tw/review/LoadMoreOverview/1,可以發現網頁內容是json格式,有明顯url的keyword
+接著我們連進去https://supertaste.tvbs.com.tw/review/LoadMoreOverview/1<br>
+可以發現網頁內容是json格式,有明顯url的keyword<br>
 <img src="4.PNG">
 
 
