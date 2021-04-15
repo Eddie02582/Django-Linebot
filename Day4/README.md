@@ -1,124 +1,112 @@
-# Day4 爬蟲
+# Day4 建立資料庫和簡單Line查尋資料
 
 
-建立可以查附近食尚玩家有介紹的店,首先透過網路爬蟲建立資料
 
-## scrapy
 
-首先我們建立基本的爬蟲,在cmd 下
-```
-    scrapy startproject example
-```
+## 建立資料庫
+上一篇我們抓取了資料,現在我們建立對應的資料庫來儲存
 
-接著進入example\spiders,在cmd下
 
-```
-    scrapy genspider supertaste https://supertaste.tvbs.com.tw/review
-```
+line\models.py
+```python 
+from django.db import models
 
-會產生supertaste.py
 
-```python
-class SupertasteSpider(scrapy.Spider):
-    name = 'supertaste'
-    allowed_domains = ['https://supertaste.tvbs.com.tw/review']
-    start_urls = ['http://https://supertaste.tvbs.com.tw/review/']
-
-    def parse(self, response):
-        pass
+class Restaurant(models.Model):
+    date = models.DateField(auto_now=False, auto_now_add=False)
+    show_name = models.CharField(max_length = 500,null = False,blank = False) 
+    url = models.CharField(max_length = 500,null = False,blank = False)      
+    name = models.CharField(max_length = 500,null = False,blank = False)  
+    image_url = models.CharField(max_length = 500,null = False,blank = False) 
+    address = models.CharField(max_length = 500,null = False,blank = False)
+    telephone = models.CharField(max_length = 500,null = False,blank = False)  
+    business_hours  = models.TextField(max_length = 500,null = False,blank = False) 
 ```
 
-我們想取得連結,可以從div class ="box"底下ul li a取得
+在cmd輸入以下兩行,更新資料庫
+```
+    python manage.py makemigrations
+    python manage.py migrate
+```
 
-<img src="1.PNG">
 
 
+接著寫一個將資料填入資料庫的py檔,也可以透過django 和scrapy 設定,並寫pipeline 來儲存資料,這邊用簡單一點的方法
 
 
-從連結取得資料
-<img src="2.PNG">
+在demoLinebot新增update_supertaste.py,並執行<br>
 
 
 ```python
-    image_url = store.css('img.lazyimage::attr(data-original)').get()
-    name = store.css('div.store_info h2::text').get()           
-    address = self.get_array_data(store.css('div.store_info p::text').re(r'地址：(.*)'))
-    business_hours = self.get_array_data(store.css('div.store_info p::text').re(r'時間：(.*)'))
-    telephone = self.get_array_data(store.css('div.store_info p::text').re(r'電話：(.*)'))  
+import json
+import os, django
+
+#設定django 環境
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "demoLinebot.settings")
+django.setup()
+
+from line.models import Restaurant
+import csv
+from datetime import datetime
+from django.db import transaction
+
+#@transaction.atomic  可以不使用,使用速度比較快
+@transaction.atomic 
+def main():
+    with open('supertaste.csv',encoding = 'utf-8') as csvfile:
+        rows = csv.reader(csvfile, delimiter=',')
+        next(rows, None)//first row is header
+        for row in rows:
+            str_date,show_name,url,name,image_url,address,business_hours,telephone = row  
+            date = datetime.strptime(str_date, "%Y/%m/%d").date()            
+            restaurant,created = Restaurant.objects.get_or_create(url = url, name = name,date = date)
+            restaurant.url = url
+            restaurant.name = name
+            restaurant.show_name = show_name
+            restaurant.image_url = image_url
+            restaurant.address = address
+            restaurant.business_hours = business_hours
+            restaurant.telephone = telephone
+            restaurant.date = date
+            restaurant.save()
+main()
 ```
 
+## 輸入縣市得到資訊
 
-code 如下
+建立一個去資料庫收尋地址相關的關鍵字,並回傳餐廳資訊
 ```python
-import scrapy
+def get_restaurant(keyword):
+    restaurants = Restaurant.objects.filter(address__icontains = keyword)[:5]
+    content = ""
+    for restaurant in restaurants:
+        content += "{0} <{1}>\n".format(restaurant.date,restaurant.show_name)
+        content += "店名:{0}\n".format(restaurant.name)
+        content += "營業時間:{0}\n".format(restaurant.business_hours)
+        content += "電話:{0}\n".format(restaurant.telephone)
+        content += "地址:{0}\n".format(restaurant.address)
+        content += "\n\n"
+    return content if content else "目前沒有資料"
+```
+修改原本的訊息內容
+```
+@csrf_exempt
+def callback(request):
+....
+                if event.message.type=='text':  
+                    line_bot_api.reply_message(  # 回復傳入的訊息文字
+                        event.reply_token,                       
+                        #TextSendMessage(text=event.message.text)
+                        TextSendMessage(text=get_restaurant(event.message.text))
+                     )
 
-class SupertasteSpider(scrapy.Spider):
-    name = 'supertaste'
-    start_urls = ['https://supertaste.tvbs.com.tw/review/']
-
-    def parse(self, response):
-        detail_links = response.css('div.box ul li a')        
-        yield from response.follow_all(detail_links, self.parse_detail)
-        
-    def get_array_data(self,array):      
-        return array[0] if array else ""
-    
-    def parse_detail(self, response):  
-        date,show_name = response.css('div.newsdetail_content div.title h1::text').re(r'(\d+/\d+).*?《(.*?)》')           
-        
-        for store in response.css('div.store_div'):
-            image_url = store.css('img.lazyimage::attr(data-original)').get()
-            name = store.css('div.store_info h2::text').get()           
-            address = self.get_array_data(store.css('div.store_info p::text').re(r'地址：(.*)'))
-            business_hours = self.get_array_data(store.css('div.store_info p::text').re(r'時間：(.*)'))
-            telephone = self.get_array_data(store.css('div.store_info p::text').re(r'電話：(.*)'))  
-            if '食尚玩家購物網' in name:
-                continue
-            
-            yield {
-                'date' : date,
-                'show_name' :  show_name,
-                'name' :  name,
-                'image_url' : image_url,
-                'address' : address,
-                'business_hours' :  business_hours,          
-                'telephone' :  telephone,
-                #'points' : points
-            }
-            
+....
 ```
 
-## 如何取得下一頁 
-由於此網頁是藉由滾動到底部才產生新的內容,檢查一下網頁原始碼,可以發現是藉由觸發事件在去/review/LoadMoreOverview/page觸發<br>
-<img src="3.PNG">
-
-<br>
-接著我們連進去https://supertaste.tvbs.com.tw/review/LoadMoreOverview/1<br>
-可以發現網頁內容是json格式,有明顯url的keyword<br>
-<img src="4.PNG">
 
 
-```python
-class SupertasteSpider(scrapy.Spider):
-    name = 'supertaste'
-    start_urls = ["https://supertaste.tvbs.com.tw/review/LoadMoreOverview/%s" %page for page in range(1,66)]
 
-    def parse(self, response):
-        #read html as json
-        
-        datas = json.loads(response.body.decode('utf-8'))
-        detail_links = [data['url'] for data in datas]     
-        yield from response.follow_all(detail_links, self.parse_detail)       
-    ....
-```
 
-start_urls也可以用start_requests取代
-```python
-    def start_requests(self):       
-        for page in range(1,66):
-            url = "https://supertaste.tvbs.com.tw/review/LoadMoreOverview/%s" %page
-            yield scrapy.Request(url)    
-```
 
 
 
