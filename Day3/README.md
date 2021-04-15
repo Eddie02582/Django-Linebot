@@ -120,6 +120,12 @@ start_urls也可以用start_requests取代
             yield scrapy.Request(url)    
 ```
 
+執行
 
+```
+    scrapy crawl supertaste -o supertaste.csv
+```
 
+結果
+<img src="5.PNG">
 
