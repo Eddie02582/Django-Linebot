@@ -84,3 +84,38 @@ class SupertasteSpider(scrapy.Spider):
             }
             
 ```
+
+## 如何取得下一頁 
+由於此網頁是藉由滾動到底部才產生新的內容,檢查一下網頁原始碼,可以發現是藉由觸發事件在去/review/LoadMoreOverview/page觸發
+<img src="3.PNG">
+
+
+接著我們連進去https://supertaste.tvbs.com.tw/review/LoadMoreOverview/1,可以發現網頁內容是json格式,有明顯url的keyword
+<img src="4.PNG">
+
+
+```python
+class SupertasteSpider(scrapy.Spider):
+    name = 'supertaste'
+    start_urls = ["https://supertaste.tvbs.com.tw/review/LoadMoreOverview/%s" %page for page in range(1,66)]
+
+    def parse(self, response):
+        #read html as json
+        
+        datas = json.loads(response.body.decode('utf-8'))
+        detail_links = [data['url'] for data in datas]     
+        yield from response.follow_all(detail_links, self.parse_detail)       
+    ....
+```
+
+start_urls也可以用start_requests取代
+```python
+    def start_requests(self):       
+        for page in range(1,66):
+            url = "https://supertaste.tvbs.com.tw/review/LoadMoreOverview/%s" %page
+            yield scrapy.Request(url)    
+```
+
+
+
+
