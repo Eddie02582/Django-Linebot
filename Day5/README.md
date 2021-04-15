@@ -106,6 +106,20 @@ def callback(request):
 
 <img src="1.PNG">
 
+## 優化顯示方式
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

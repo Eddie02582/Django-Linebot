@@ -8,5 +8,5 @@
     <li><a href = "https://github.com/Eddie02582/Django-Linebot/tree/main/Day3">介紹Line 傳送其他訊息</li>
     <li><a href = "https://github.com/Eddie02582/Django-Linebot/tree/main/Day4">網路爬蟲</li>
     <li><a href = "https://github.com/Eddie02582/Django-Linebot/tree/main/Day5">建立資料庫和簡單Line查尋資料</li>
-        
+    <li><a href = "https://github.com/Eddie02582/Django-Linebot/tree/main/Day6">Flex Message</li>    
 </ul>
