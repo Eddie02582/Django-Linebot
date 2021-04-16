@@ -37,7 +37,9 @@
                 ]
 ```
 
- 利用迴圈產生
+ 利用迴圈產生,文字不能空白,如下圖黃色,這邊是在model裡寫方法避免,當然也可以建立時先判斷有無資料,在決定是否加那段文字
+ 
+ <img src="3.PNG">
  
 ```python
 def get_flex_content(restaurants):
@@ -154,7 +156,7 @@ def get_flex_content(restaurants):
     return contents
 ```
 最後在將內容以FlexSendMessage送出
-```
+```python 
 def get_restaurant_FlexMessage(restaurants):
     #將JSON設定為變數content，並以FlexSendMessage()包成Flex Message
 
@@ -199,7 +201,7 @@ def get_restaurant_FlexMessages(restaurants):
 ```
 
 
-<img src="2.PNG">
+<img src="3.PNG">
 
 
 
