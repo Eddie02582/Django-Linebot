@@ -90,7 +90,7 @@ AudioSendMessage,有2個參數如下
 ```
 
 ## 位置
-```
+```python
     LocationSendMessage(
         title='my location', 
         address='Taipei', 
@@ -115,7 +115,9 @@ AudioSendMessage,有2個參數如下
 
 
 ### ButtonsTemplate
+
 <img src="4.PNG">
+
 ```python
     message = TemplateSendMessage(
         alt_text='Buttons template',
