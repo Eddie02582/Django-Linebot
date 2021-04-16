@@ -39,7 +39,7 @@
 
  利用迴圈產生,文字不能空白,如下圖黃色,這邊是在model裡寫方法避免,當然也可以建立時先判斷有無資料,在決定是否加那段文字
  
- <img src="3.PNG">
+ <img src="2.PNG">
  
 ```python
 def get_flex_content(restaurants):
