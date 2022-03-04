@@ -1,10 +1,8 @@
 # Flex Message
 
-可以建立,屬於自己格式的訊息,官方提供的範例如下：
+可以建立,屬於自己格式的訊息,<a href = "https://developers.line.biz/en/docs/messaging-api/using-flex-messages/">官方</a>提供的範例如下：
+
 <img src="1.PNG">
-
-
-兇
 
 
 由下圖可知主要分四塊
